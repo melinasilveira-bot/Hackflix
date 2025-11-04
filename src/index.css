@@ -1,68 +1,214 @@
+/* Variables de Color */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+   --color-dark-bg: #141414; /* Fondo principal oscuro */
+   --color-text-white: #e5e5e5; /* Texto principal claro */
+   --color-red-netflix: #e50914; /* Rojo característico */
+   --color-pink-soft: #f4b6c3; /* Rosa suave para resaltar (como en el filtro de estrellas) */
+   --color-card-bg: #222; /* Fondo de tarjetas */
+   --color-overlay: rgba(0, 0, 0, 0.7); /* Overlay semi-transparente */
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* Estilos Globales */
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+   margin: 0;
+   padding-top: 5rem; /* Espacio para el navbar fijo */
+   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+      "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+      "Helvetica Neue", sans-serif;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   background-color: var(--color-dark-bg);
+   color: var(--color-text-white);
+   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.app-container {
+   min-height: 100vh;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* --- Navbar (HackflixNav) --- */
+.navbar {
+   background-color: var(--color-dark-bg) !important;
+   border-bottom: 1px solid #333;
+   padding: 1rem 3rem;
+   transition: all 0.3s ease;
+   z-index: 1030; /* Para que quede por encima de todo */
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.logo {
+   color: var(--color-red-netflix) !important;
+   font-weight: 900;
+   font-size: 2rem;
+   letter-spacing: 2px;
+   margin-right: auto;
+}
+
+.nav-button {
+   border-color: var(--color-text-white) !important;
+   color: var(--color-text-white) !important;
+   transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+   background-color: var(--color-red-netflix) !important;
+   border-color: var(--color-red-netflix) !important;
+}
+
+/* --- Carrusel (Hero) --- */
+.hero-carousel-container {
+   position: relative;
+   margin-bottom: 3rem;
+}
+
+.carousel-title {
+   position: absolute;
+   bottom: 0;
+   left: 50%;
+   transform: translateX(-50%);
+   z-index: 2;
+   font-size: 2.5rem;
+   font-weight: 700;
+   color: white;
+   text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+   padding: 0.5rem 1rem;
+}
+
+.hackflix-carousel {
+   height: 60vh; /* Altura del carrusel */
+}
+
+.carousel-item-content {
+   height: 60vh;
+   background-size: cover;
+   background-position: center;
+   /* Oscurece la imagen para que el texto destaque */
+   box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Contenido Principal y Filtro --- */
+.content-area {
+   padding: 0 3rem;
+   margin-bottom: 3rem;
+}
+
+.filter-and-grid-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 2rem;
+}
+
+.rating-filter-container {
+   background-color: var(--color-card-bg);
+   padding: 0.5rem 1rem;
+   border-radius: 5px;
+}
+
+/* Estilo para el texto del filtro */
+.rating-filter-container .text-muted {
+   color: var(--color-text-white) !important;
+   font-size: 0.9rem;
+   font-weight: 600;
+}
+
+/* --- Tarjetas de Películas (MovieCard) --- */
+.movie-grid-row {
+   --bs-gutter-x: 0.5rem; /* Espaciado reducido entre cards */
+   --bs-gutter-y: 1.5rem;
+}
+
+.movie-card {
+   position: relative;
+   overflow: hidden;
+   border-radius: 8px;
+   cursor: pointer;
+   height: 100%;
+   transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.movie-card:hover {
+   transform: scale(1.05);
+   box-shadow: 0 0 15px rgba(229, 9, 20, 0.6); /* Sombra de neón roja */
+   z-index: 10;
+}
+
+.movie-poster {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   display: block;
+}
+
+.movie-info-overlay {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background-color: var(--color-overlay);
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-end;
+   padding: 1rem;
+   opacity: 0; /* Inicialmente oculto */
+   transition: opacity 0.3s ease;
+}
+
+.movie-card:hover .movie-info-overlay {
+   opacity: 1; /* Visible al hacer hover */
+}
+
+.movie-title {
+   font-size: 1.1rem;
+   font-weight: 700;
+   margin-bottom: 0.5rem;
+}
+
+.movie-rating {
+   color: var(--color-pink-soft);
+   font-weight: 600;
+   font-size: 0.9rem;
+}
+
+.no-results-message {
+   padding: 3rem;
+   text-align: center;
+   font-size: 1.2rem;
+   color: var(--color-pink-soft);
+   background-color: var(--color-card-bg);
+   border-radius: 8px;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 992px) {
+   .navbar {
+      padding: 0.8rem 1rem;
+   }
+   .content-area {
+      padding: 0 1rem;
+   }
+   .carousel-title {
+      font-size: 1.8rem;
+   }
+   .hackflix-carousel,
+   .carousel-item-content {
+      height: 40vh;
+   }
+}
+
+@media (max-width: 576px) {
+   body {
+      padding-top: 4rem;
+   }
+   .logo {
+      font-size: 1.5rem;
+   }
+   .carousel-title {
+      font-size: 1.5rem;
+   }
+   .filter-and-grid-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+   }
 }
