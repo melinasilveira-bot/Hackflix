@@ -1,81 +1,74 @@
 import React, { useState, useEffect } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { Container, Carousel } from "react-bootstrap";
-// CRÍTICO: Confirma que la ruta es correcta.
-import moviesData from "./data/movies.json";
 
-// Importación de tus componentes
 import HackflixNav from "./HackflixNav";
 import RatingFilter from "./RatingFilter";
 import MovieGrid from "./MovieGrid";
 
 function App() {
-   // Inicialización de estados
+   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+
+   // Estados
    const [movies, setMovies] = useState([]);
    const [filteredMovies, setFilteredMovies] = useState([]);
    const [minRating, setMinRating] = useState(0);
    const [carouselMovies, setCarouselMovies] = useState([]);
+   const [page, setPage] = useState(1);
+   const [hasMore, setHasMore] = useState(true);
 
+   // Obtener películas desde TMDb
    useEffect(() => {
-      // Carga de datos inicial
-      if (Array.isArray(moviesData) && moviesData.length > 0) {
-         setMovies(moviesData);
-         setFilteredMovies(moviesData);
-         // Selecciona las primeras 5 para el carrusel
-         setCarouselMovies(moviesData.slice(0, 5));
-      } else {
-         console.error(
-            "ERROR: No se pudo cargar el archivo movies.json o está vacío."
-         );
-      }
-   }, []);
+      fetch(
+         `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=es-ES&page=${page}`
+      )
+         .then((res) => res.json())
+         .then((data) => {
+            if (data.results && data.results.length > 0) {
+               setMovies((prev) => [...prev, ...data.results]);
+               setFilteredMovies((prev) => [...prev, ...data.results]);
+               if (page === 1) {
+                  setCarouselMovies(data.results.slice(0, 5));
+               }
+               if (page >= data.total_pages) setHasMore(false);
+            } else {
+               setHasMore(false);
+            }
+         })
+         .catch((error) => console.error("Error al obtener películas:", error));
+   }, [page]);
 
-   useEffect(() => {
-      // Lógica de filtrado
-      if (minRating > 0) {
-         const newFiltered = movies.filter(
-            (movie) => movie.vote_average >= minRating
-         );
-         setFilteredMovies(newFiltered);
-      } else {
-         // Mostrar todas si no hay filtro activo
-         setFilteredMovies(movies);
-      }
-   }, [minRating, movies]);
+   // Cargar más películas al hacer scroll
+   const fetchMoreMovies = () => {
+      setPage((prev) => prev + 1);
+   };
 
+   // Filtro por rating
    const handleRatingChange = (stars) => {
       let requiredRating = 0;
-
-      // Reglas de filtrado: 4 estrellas = 6+, 5 estrellas = 8+
-      if (stars === 4) {
-         requiredRating = 6;
-      } else if (stars === 5) {
-         requiredRating = 8;
-      } else {
-         requiredRating = 0; // Resetea el filtro
-      }
-
+      if (stars === 4) requiredRating = 6;
+      else if (stars === 5) requiredRating = 8;
+      else requiredRating = 0;
       setMinRating(requiredRating);
    };
 
-   // Muestra un mensaje de carga/error si los datos no están listos
+   // Mostrar mensaje de carga si no hay datos
    if (movies.length === 0) {
       return (
          <div className="app-container p-5 text-center text-white">
-            Cargando datos... Por favor, asegúrate de que 'src/data/movies.json'
-            existe y tiene contenido.
+            Cargando datos... Por favor, espera unos segundos.
          </div>
       );
    }
 
    return (
       <div className="app-container">
-         {/* 1. Navbar superpuesta */}
+         {/* Navbar */}
          <HackflixNav />
 
-         {/* 2. Carrusel Hero */}
+         {/* Carrusel principal */}
          <section className="hero-carousel-container">
             <h2 className="carousel-title">¡Tus películas favoritas!</h2>
-
             {carouselMovies.length > 0 && (
                <Carousel
                   fade
@@ -89,7 +82,7 @@ function App() {
                         <div
                            className="carousel-item-content"
                            style={{
-                              backgroundImage: `url(${movie.poster_path})`,
+                              backgroundImage: `url(https://image.tmdb.org/t/p/w500${movie.poster_path})`,
                            }}
                         />
                      </Carousel.Item>
@@ -98,7 +91,7 @@ function App() {
             )}
          </section>
 
-         {/* 3. Área de Contenido Principal y Filtrado */}
+         {/* Área principal */}
          <Container fluid className="content-area">
             <div className="filter-and-grid-header">
                <h3>Películas Disponibles</h3>
@@ -108,8 +101,24 @@ function App() {
                />
             </div>
 
-            {/* 4. Mostrar el Grid de Películas filtradas */}
-            <MovieGrid movies={filteredMovies} minRating={minRating} />
+            {/* Scroll infinito */}
+          <InfiniteScroll
+   dataLength={movies.length} // cantidad actual de películas
+   next={fetchMoreMovies} // función que carga más
+   hasMore={hasMore} // si hay más películas
+   loader={
+      <h4 className="text-center text-white">
+         Cargando más películas...
+      </h4>
+   }
+>
+   <MovieGrid 
+      movies={filteredMovies} 
+      loadMore={fetchMoreMovies} 
+      hasMore={hasMore} 
+   />
+</InfiniteScroll>
+
          </Container>
       </div>
    );

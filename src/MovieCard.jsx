@@ -12,11 +12,12 @@ const MovieCard = ({ movie }) => {
          <Card className="movie-card bg-dark text-white border-0">
             {/* Usamos el póster como imagen principal de la tarjeta */}
             <Card.Img
-               variant="top"
-               src={movie.poster_path}
-               alt={movie.title}
-               className="movie-poster"
-            />
+   variant="top"
+   src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "https://via.placeholder.com/500x750?text=No+Image"}
+   alt={movie.title}
+   className="movie-poster"
+/>
+
 
             {/* Overlay de información (visible al hacer hover con CSS) */}
             <div className="movie-info-overlay">

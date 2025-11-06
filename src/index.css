@@ -1,8 +1,8 @@
 /* Variables de Color */
 :root {
-   --color-dark-bg: #141414; /* Fondo principal oscuro */
+   --color-dark-bg: #471f2e; /* Fondo principal oscuro */
    --color-text-white: #e5e5e5; /* Texto principal claro */
-   --color-red-netflix: #e50914; /* Rojo característico */
+   --color-red-netflix: #c71e26; /* Rojo característico */
    --color-pink-soft: #f4b6c3; /* Rosa suave para resaltar (como en el filtro de estrellas) */
    --color-card-bg: #222; /* Fondo de tarjetas */
    --color-overlay: rgba(0, 0, 0, 0.7); /* Overlay semi-transparente */
