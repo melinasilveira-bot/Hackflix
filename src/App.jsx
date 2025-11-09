@@ -5,7 +5,7 @@ import { Container, Carousel } from "react-bootstrap";
 import HackflixNav from "./HackflixNav";
 import RatingFilter from "./RatingFilter";
 import MovieGrid from "./MovieGrid";
-import MovieDetailModal from "./MovieDetailModal"; //  IMPORTADO EL NUEVO MODAL
+import MovieDetailModal from "./MovieDetailModal"; // 👈 IMPORTADO EL NUEVO MODAL
 
 function App() {
    const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -18,7 +18,7 @@ function App() {
    const [page, setPage] = useState(1);
    const [hasMore, setHasMore] = useState(true);
 
-   // NUEVOS ESTADOS PARA EL MODAL
+   // 🌟 NUEVOS ESTADOS PARA EL MODAL
    const [selectedMovie, setSelectedMovie] = useState(null);
 
    // Obtener películas desde TMDb
@@ -71,7 +71,7 @@ function App() {
    }, [minRating, movies]);
 
    // ---------------------------------------------------------------------
-   //  NUEVAS FUNCIONES PARA EL MODAL
+   // 🌟 NUEVAS FUNCIONES PARA EL MODAL
    // ---------------------------------------------------------------------
    const handleCardClick = (movie) => {
       setSelectedMovie(movie); // Guarda la película para mostrar el modal
@@ -160,6 +160,7 @@ function App() {
                ) : (
                   <MovieGrid
                      movies={filteredMovies}
+                     // 👈 PASAMOS LA FUNCIÓN DE CLICK
                      onCardClick={handleCardClick}
                   />
                )}

@@ -8,7 +8,7 @@ const MovieCard = ({ movie, onCardClick }) => {
       : "N/A";
 
    return (
-      // Añadi el evento onClick aquí y lo pasamos al MovieCard
+      // Añadimos el evento onClick aquí y lo pasamos al MovieCard
       // Col define el ancho en el Grid de Bootstrap
       <Col
          xs={6}
