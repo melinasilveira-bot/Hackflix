@@ -1,4 +1,4 @@
-/* --- Variables de Color (Mantenemos el estilo rosa Hackflix) --- */
+/* --- Variables de Color Fondo--- */
 :root {
    --color-pink-soft: #ffb6c1; /* Light Pink */
    --color-pink-dark: #e88d8d;
@@ -7,7 +7,7 @@
    --color-gray-text: #aaaaaa;
 }
 
-/* --- Estilos Generales y Reset (Bootstrap se encarga de muchos de estos) --- */
+/* --- Estilos Generales y Reset (Bootstrap) --- */
 body {
    background-color: var(--color-black-netflix);
 }
@@ -16,7 +16,6 @@ body {
    background-color: var(--color-black-netflix);
    color: var(--color-white-text);
    min-height: 100vh;
-   /* Eliminamos padding-top ya que 'fixed="top"' de Navbar lo maneja mejor */
 }
 
 /* --- NAV BAR (HackflixNav.jsx) --- */
@@ -26,7 +25,7 @@ body {
 }
 
 .logo {
-   color: var(--color-pink-soft) !important; /* Logo Hackflix en rosa suave */
+   color: var(--color-pink-soft) !important; /* Logo Hackflix */
    font-size: 2em !important;
    font-weight: bold;
    letter-spacing: 1px;
@@ -72,7 +71,7 @@ body {
    position: relative;
 }
 
-/* Efecto de sombra para que el texto sea visible y simule Netflix */
+/* Efecto de sombra para que el texto sea visible*/
 .hackflix-carousel .carousel-item-content::after {
    content: "";
    position: absolute;
@@ -129,13 +128,13 @@ body {
 .movie-card {
    cursor: pointer;
    overflow: hidden;
-   height: 100%; /* Asegura que todas las tarjetas tengan la misma altura */
+   height: 100%; /*  todas las tarjetas con la misma altura */
 }
 
 .movie-poster {
    width: 100%;
    height: 100%;
-   object-fit: cover; /* Asegura que la imagen cubra todo el espacio sin distorsionarse */
+   object-fit: cover; /* la imagen cubra todo el espacio sin distorsionarse */
    border-radius: 4px;
    transition: transform 0.3s, opacity 0.3s;
 }

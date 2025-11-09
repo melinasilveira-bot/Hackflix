@@ -1,6 +1,6 @@
 import React from "react";
 import { Navbar, Container, Button } from "react-bootstrap";
-// Se asume Font Awesome cargado en index.html
+//  asume Font Awesome cargado en index.html
 
 const HackflixNav = () => {
    return (
