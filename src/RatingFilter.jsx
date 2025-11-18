@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 
 // Componente StarIcon con SVG para evitar dependencias
@@ -11,8 +11,8 @@ const StarIcon = ({ filled, onStarClick, index, onHover, onLeave }) => (
       width="25"
       viewBox="0 0 24 24"
       // Colores basados en tu estilo
-      fill={filled ? "var(--color-pink-soft, #ff4d6d)" : "#333"}
-      stroke={filled ? "var(--color-pink-soft, #ff4d6d)" : "#333"}
+      fill={filled ? "var(--color-pink-soft, #ff4d6d)" : "#888"}
+      stroke={filled ? "var(--color-pink-soft, #ff4d6d)" : "#888"}
       strokeWidth="1.5"
       style={{ cursor: "pointer", transition: "fill 0.2s", margin: "0 1px" }}
    >
@@ -20,11 +20,18 @@ const StarIcon = ({ filled, onStarClick, index, onHover, onLeave }) => (
    </svg>
 );
 
-const RatingFilter = ({ onRatingChange }) => {
+const RatingFilter = ({ onRatingChange, currentRating }) => {
+   // 💡 Recibimos currentRating
    // Usamos 'activeStars' para el estado interno (número de estrellas de 0 a 5)
    const [activeStars, setActiveStars] = useState(0);
    // Usamos 'hoveredStars' para el feedback visual al pasar el ratón
    const [hoveredStars, setHoveredStars] = useState(0);
+
+   // 🚀 NUEVA SINCRONIZACIÓN: Sincroniza el estado interno con la prop de App.jsx
+   useEffect(() => {
+      // Asegura que el estado interno se actualice si la prop cambia (ej. al navegar)
+      setActiveStars(currentRating);
+   }, [currentRating]);
 
    // Determina cuántas estrellas deben estar llenas (hover toma precedencia)
    const displayStars = hoveredStars > 0 ? hoveredStars : activeStars;
@@ -44,7 +51,7 @@ const RatingFilter = ({ onRatingChange }) => {
          starsToReport = newStarCount;
       }
 
-      // 3. Pasamos el NÚMERO DE ESTRELLAS al componente App.jsx (0, 4, o 5)
+      // 3. Pasamos el NÚMERO DE ESTRELLAS al componente App.jsx (0 a 5)
       onRatingChange(starsToReport);
    };
 
@@ -52,7 +59,7 @@ const RatingFilter = ({ onRatingChange }) => {
    const handleReset = (e) => {
       e.preventDefault();
       setActiveStars(0);
-      onRatingChange(0);
+      onRatingChange(0); // Le decimos a App.jsx que el filtro es 0
    };
 
    // Manejo de hover
